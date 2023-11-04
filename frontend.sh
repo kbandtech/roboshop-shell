@@ -1,4 +1,4 @@
-code_dir=$(pwd)
+#code_dir=$(pwd)
 
 
 echo -e "\e[35mInstalling nginx\e[0m"
@@ -17,7 +17,8 @@ unzip /tmp/frontend.zip
 echo -e "\e[35mCopying Nginx Config for Roboshop\e[0m"
 pwd
 ls -l
-cp ${code_dir}/Configs/nginx-roboshop.conf /etc/nginx/default.d/roboshop.conf
+cp Configs/nginx-roboshop.conf /etc/nginx/default.d/roboshop.conf#
+#cp ${code_dir}/Configs/nginx-roboshop.conf /etc/nginx/default.d/roboshop.conf
 
 echo -e "\e[35mEnabling nginx\e[0m"
 systemctl enable nginx 
