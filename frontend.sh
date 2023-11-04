@@ -3,7 +3,7 @@ log_file=/tmp/roboshop.log
 rm -f ${log_file}
 
 print_head() {
-    print_head"$1"
+    echo -e "\e[35m$1\e[0m"
 }
 
 print_head "Installing nginx"
