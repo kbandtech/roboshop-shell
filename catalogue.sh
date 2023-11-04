@@ -1,3 +1,5 @@
+source common.sh
+
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash
 dnf install nodejs -y
 useradd roboshop

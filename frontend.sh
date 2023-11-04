@@ -1,10 +1,4 @@
-code_dir=$(pwd)
-log_file=/tmp/roboshop.log
-rm -f ${log_file}
-
-print_head() {
-    echo -e "\e[36m$1\e[0m"
-}
+source common.sh
 
 print_head "Installing nginx"
 dnf install nginx -y &>>${log_file}
@@ -33,4 +27,6 @@ systemctl restart nginx &>>${log_file}
 
 ## Roboshop Config is not copied
 ## If any command is errored or failed, we need to stop the script
+# Status of a command need to be printed
+
 
