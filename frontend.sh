@@ -2,29 +2,33 @@ code_dir=$(pwd)
 log_file=/tmp/roboshop.log
 rm -f ${log_file}
 
-echo -e "\e[35mInstalling nginx\e[0m"
+print_head() {
+    print_head"$1"
+}
+
+print_head "Installing nginx"
 dnf install nginx -y &>>${log_file}
 
-echo -e "\e[35mRemoving old Content\e[0m"
+print_head "Removing old Content"
 rm -rf /usr/share/nginx/html/* &>>${log_file}
 
-echo -e "\e[35mDownload FrontEnd Content\e[0m"
+print_head "Download FrontEnd Content"
 curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend.zip &>>${log_file}
 
-echo -e "\e[35mExtracting Downloaded FrontEnd\e[0m"
+print_head "Extracting Downloaded FrontEnd"
 cd /usr/share/nginx/html &>>${log_file}
 unzip /tmp/frontend.zip &>>${log_file}
 
-echo -e "\e[35mCopying Nginx Config for Roboshop\e[0m" &>>${log_file}
+print_head "Copying Nginx Config for Roboshop" &>>${log_file}
 pwd &>>${log_file}
 ls -l &>>${log_file}
 #cp Configs/nginx-roboshop.conf /etc/nginx/default.d/roboshop.conf#
 cp ${code_dir}/Configs/nginx-roboshop.conf /etc/nginx/default.d/roboshop.conf &>>${log_file}
 
-echo -e "\e[35mEnabling nginx\e[0m"
+print_head "Enabling nginx"
 systemctl enable nginx &>>${log_file}
 
-echo -e "\e[35mStarting nginx\e[0m"
+print_head "Starting nginx"
 systemctl restart nginx &>>${log_file}
 
 ## Roboshop Config is not copied
