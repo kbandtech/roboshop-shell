@@ -12,7 +12,7 @@ status_check() {
      
     else
      echo FAILURE
-     
+     echo "Read the log file ${log_file} for more infromation about the error"
      exit 1
      
     fi
