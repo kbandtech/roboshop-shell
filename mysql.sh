@@ -28,6 +28,3 @@ print_head "Set password"
 mysql_secure_installation --set-root-pass ${mysql_root_password}
 status_check $?
 
-print_head ""
-mysql -uroot -pRoboShop@1
-status_check $?
