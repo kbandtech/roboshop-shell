@@ -1,7 +1,7 @@
 source common.sh
 
 print_head "Installing nginx"
-dnf install nginx -y &>>${log_file}
+dnf install nginxx -y &>>${log_file}
 status_check $?
  
 
