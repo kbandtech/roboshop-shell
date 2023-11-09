@@ -15,7 +15,7 @@ print_head "Setup RabbitMQ repos"
 curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash &>>${log_file}
 status_check $?
 
-print_head "Setup Erlang & RabbitMQ"
+print_head "Install Erlang & RabbitMQ"
 dnf install rabbitmq-server erlang -y &>>${log_file}
 status_check $?
 
@@ -23,7 +23,7 @@ status_check $?
 print_head "Enable RabbitMQ Service"
 systemctl enable rabbitmq-server &>>${log_file}
 status_check $?
-
+v
 print_head "Start RabbitMQ Service"
 systemctl start rabbitmq-server &>>${log_file}
 status_check $?
