@@ -18,6 +18,24 @@ status_check() {
     fi
 }
 
+systemd_setup() {
+    print_head "Copy SystemD Service file"
+    cp ${code_dir}/Configs/${component}.service /etc/systemd/system/${component}.service &>>${log_file}
+    status_check $?
+    
+    print_head "Reload SystemD"
+    systemctl daemon-reload &>>${log_file}
+    status_check $?
+    
+    print_head "Enable ${component} Service"
+    systemctl enable ${component} &>>${log_file}
+    status_check $?
+    
+    print_head "Start ${component} Service"
+    systemctl restart ${component} &>>${log_file}
+    status_check $?
+}
+
 schema_setup() {
     if [ "${schema_type}" == "mongo" ]; then
         print_head "Copy MongoDB Repo File"
@@ -31,20 +49,21 @@ schema_setup() {
         print_head "Load Schema"
         mongo --host mongodb.devopsb71.icu </app/schema/${component}.js &>>${log_file}
         status_check $?
+    elif [  "${schema_type}" == "mysql" ]; then
+    
+        print_head "Install MYSQL Client"
+        dnf install mysql -y
+        status_check $?
+        
+        print_head "Load Schema"
+        mysql -h mysql.devopsb71.icu -uroot -p${mysql_root_password} < /app/schema/shipping.sql
+        status_check $?
+       
     fi    
+        
 }
-
-nodejs() {
-   
-    print_head "Configure NodeJS Repo"
-    curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>${log_file}
-    status_check $?
-    
-    print_head "Install NodeJS"
-    dnf install nodejs -y &>>${log_file}
-    status_check $?
-    
-    print_head "Create Roboshop ${component}"
+app_prereq_setup() {
+      print_head "Create Roboshop ${component}"
     id roboshop &>>${log_file}
     if [ $? -ne 0 ]; then
      useradd roboshop &>>${log_file}
@@ -70,28 +89,52 @@ nodejs() {
     unzip /tmp/${component}.zip &>>${log_file}
     cd /app
     status_check $?
+}
+
+nodejs() {
+   
+    print_head "Configure NodeJS Repo"
+    curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>${log_file}
+    status_check $?
+    
+    print_head "Install NodeJS"
+    dnf install nodejs -y &>>${log_file}
+    status_check $?
+    
+    app_prereq_setup  
     
     print_head "Installing NodeJS Dependencies"
     npm install &>>${log_file}
     status_check $?
     
-    print_head "Copy SystemD Service file"
-    cp ${code_dir}/Configs/${component}.service /etc/systemd/system/${component}.service &>>${log_file}
-    status_check $?
     
-    print_head "Reload SystemD"
-    systemctl daemon-reload &>>${log_file}
-    status_check $?
-    
-    print_head "Enable ${component} Service"
-    systemctl enable ${component} &>>${log_file}
-    status_check $?
-    
-    print_head "Start ${component} Service"
-    systemctl restart ${component} &>>${log_file}
-    status_check $?
     
     
     schema_setup
+    
+    systemd_setup
+    
 
+}
+
+java() {
+    
+    print_head "Install Maven"
+    dnf install maven -y &>>${log_file}
+    status_check $?
+    
+    app_prereq_setup
+    
+    print_head "Download Dependencies & Package"
+    mvn clean package &>>${log_file}
+    mv target/${component}-1.0.jar ${component}.jar &>>${log_file}
+    status_check $?
+    
+    # Schema Setup Function
+    schema_setup
+    
+   # SystemD Function
+    systemd_setup
+    
+    
 }
