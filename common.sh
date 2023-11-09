@@ -51,12 +51,12 @@ schema_setup() {
         status_check $?
     elif [  "${schema_type}" == "mysql" ]; then
     
-        print_head "Install MYSQL Client"
-        dnf install mysql -y
+        print_head "Install MYSQL Client" 
+        dnf install mysql -y  &>>${log_file}
         status_check $?
         
         print_head "Load Schema"
-        mysql -h mysql.devopsb71.icu -uroot -p${mysql_root_password} < /app/schema/shipping.sql
+        mysql -h mysql.devopsb71.icu -uroot -p${mysql_root_password} < /app/schema/shipping.sql &>>${log_file}
         status_check $?
        
     fi    
