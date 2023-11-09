@@ -65,7 +65,7 @@ schema_setup() {
         
 }
 app_prereq_setup() {
-      print_head "Create Roboshop ${component}"
+    print_head "Create Roboshop ${component}"
     id roboshop &>>${log_file}
     if [ $? -ne 0 ]; then
      useradd roboshop &>>${log_file}
@@ -129,7 +129,7 @@ java() {
     
     print_head "Download Dependencies & Package"
     mvn clean package &>>${log_file}
-    mv target/${component}-1.0.jar ${component}.jar &>>${log_file}
+    mv target/${component}-1.0.jar ${component}.jar  &>>${log_file}
     status_check $?
     
     # Schema Setup Function
