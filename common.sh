@@ -141,7 +141,7 @@ java() {
     
 }
 
-java() {
+python() {
     
     print_head "Install Python"
     dnf install python36 gcc python3-devel -y &>>${log_file}
