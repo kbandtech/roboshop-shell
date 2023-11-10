@@ -21,9 +21,9 @@ status_check $?
 
 
 print_head "Enable RabbitMQ Service"
-systemctl enable rabbitmq-server &>>${log_file}
+systemctl enable rabbitmq-server  &>>${log_file}
 status_check $?
-v
+
 print_head "Start RabbitMQ Service"
 systemctl start rabbitmq-server &>>${log_file}
 status_check $?
@@ -36,5 +36,5 @@ fi
 status_check $?
 
 print_head "Configure Permissions for Application User"
-rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>${log_file}
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"  &>>${log_file}
 status_check $?
