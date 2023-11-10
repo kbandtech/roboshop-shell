@@ -159,3 +159,25 @@ python() {
     
     
 }
+
+golang() {
+    
+    print_head "Install Golang"
+    dnf install golang -y &>>${log_file}
+    status_check $?
+    
+    app_prereq_setup
+    
+    print_head "Download Dependencies & build the software"
+    cd /app 
+    go mod init dispatch &>>${log_file}
+    go get &>>${log_file}
+    go build &>>${log_file}
+    status_check $?
+    
+   
+    # SystemD Function
+    systemd_setup
+    
+    
+}
