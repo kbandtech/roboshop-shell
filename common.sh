@@ -169,7 +169,6 @@ golang() {
     app_prereq_setup
     
     print_head "Download Dependencies & build the software"
-    cd /app 
     go mod init dispatch &>>${log_file}
     go get &>>${log_file}
     go build &>>${log_file}
