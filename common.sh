@@ -49,7 +49,7 @@ schema_setup() {
         status_check $?
         
         print_head "Load Schema"
-        mongo --host mongodb.devopsb71.icu </app/schema/${component}.js &>>${log_file}
+        mongo --host mongodb-dev.devopsb71.icu </app/schema/${component}.js &>>${log_file}
         status_check $?
     elif [  "${schema_type}" == "mysql" ]; then
     
@@ -58,7 +58,7 @@ schema_setup() {
         status_check $?
         
         print_head "Load Schema"
-        mysql -h mysql.devopsb71.icu -uroot -p${mysql_root_password} < /app/schema/shipping.sql &>>${log_file}
+        mysql -h mysql-dev.devopsb71.icu -uroot -p${mysql_root_password} < /app/schema/shipping.sql &>>${log_file}
         status_check $?
        
     fi    
